@@ -24,6 +24,7 @@ namespace WebProje.Controllers
         public IActionResult Index()
         {
             return View();
+            int deneme = 5;
             //var result = _context.Blog.Include(s => s.Student);
             //return View(result.ToList());
         }
