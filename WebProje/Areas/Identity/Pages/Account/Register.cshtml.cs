@@ -11,8 +11,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using WebProje.Data;
+using WebProje.Models;
 
 namespace WebProje.Areas.Identity.Pages.Account
 {
@@ -23,8 +27,10 @@ namespace WebProje.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
+            ApplicationDbContext context,
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
@@ -34,6 +40,7 @@ namespace WebProje.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [BindProperty]
@@ -45,6 +52,29 @@ namespace WebProje.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
+            [DataType(DataType.Date)]
+            [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+            [Display(Name = "Birthday")]
+            public DateTime? Birthday { get; set; }
+
+            [Display(Name = "Place Of Birth")]
+            public String PlaceOfBirth { get; set; }
+
+            [Display(Name = "University")]
+            public string University { get; set; }
+
+            [Display(Name = "Department")]
+            public int DepartmentId { get; set; }
+
+            [Display(Name = "Homeland")]
+            public int HomelandId { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -60,10 +90,14 @@ namespace WebProje.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            ViewData["HomelandId"] = new SelectList(_context.Homeland, "Id", "Name");
+            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "DepartmentName");
+
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -74,7 +108,7 @@ namespace WebProje.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, LastName = Input.LastName, FirstName = Input.FirstName, Birthday = Input.Birthday, University = Input.University, PlaceOfBirth = Input.PlaceOfBirth, HomelandId = Input.HomelandId, DepartmentId = Input.DepartmentId };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

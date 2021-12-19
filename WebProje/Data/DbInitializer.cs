@@ -40,7 +40,7 @@ namespace WebProje.Data
 
             }
 
-            //if (_db.Roles.Any(r => r.Name == "Admin")) return;
+            if (_db.Roles.Any(r => r.Name == "Admin")) return;
 
             _roleManager.CreateAsync(new IdentityRole("Admin")).GetAwaiter().GetResult();
             _roleManager.CreateAsync(new IdentityRole("Student")).GetAwaiter().GetResult();

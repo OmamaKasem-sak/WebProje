@@ -13,6 +13,39 @@
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="Input.FirstName"></label>
+                <input asp-for="Input.FirstName" class="form-control" />
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div><div class="form-group">
+                <label asp-for="Input.LastName"></label>
+                <input asp-for="Input.LastName" class="form-control" />
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Birthday"></label>
+                <input asp-for="Input.Birthday" class="form-control" />
+                <span asp-validation-for="Input.Birthday" class="text-danger"></span>
+            </div><div class="form-group">
+                <label asp-for="Input.PlaceOfBirth"></label>
+                <input asp-for="Input.PlaceOfBirth" class="form-control" />
+                <span asp-validation-for="Input.PlaceOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.University"></label>
+                <input asp-for="Input.University" class="form-control" />
+                <span asp-validation-for="Input.University" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.DepartmentId"></label>
+                <select asp-for="Input.DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId"></select>
+                <span asp-validation-for="Input.DepartmentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.HomelandId"></label>
+                <select asp-for="Input.HomelandId" class="form-control" asp-items="ViewBag.HomelandId"></select>
+                <span asp-validation-for="Input.HomelandId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Input.Email"></label>
                 <input asp-for="Input.Email" class="form-control" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
