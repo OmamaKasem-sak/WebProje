@@ -1,0 +1,62 @@
+﻿@*@model List<Blog>*@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!-- #region Blog Listesi -->
+<section id="blog" style="margin-top:20px!important;">
+    <div class="container mb-3">
+        <div class="center">
+            <div class="col-md-6 col-md-offset-3">
+                <h2>Blog Listesi</h2>
+                <hr>
+                <p class="lead text-center">Burada blog listesi olacak...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Burada veritabanından gelen blogları listeliyoruz -->
+        @*@foreach (var item in @Model)
+	    {*@
+        <div class="well" style="background-color:#F9C5D5">
+            <div class="media">
+                <a class="pull-left" href="#">
+                    @*<img class="media-object" src="~/images/blog/@item.Image" width="150" height="150">*@
+                </a>
+                <div class="media-body">
+                    @*<h4 class="media-heading"><a href="#">@item.Title</a></h4>*@
+                    @*<p class="text-right">By @item.Student.FirstName*@<p>
+                    <p>
+                        <a href="#">
+                            @*@item.Content*@
+                        </a>
+                    </p>
+                    <ul class="list-inline list-unstyled">
+                        <li><span>@*<i class="glyphicon glyphicon-calendar"></i> @item.CreateDate*@ </span></li>
+                        <li>|</li>
+                        <span><i class="glyphicon glyphicon-comment"></i> 2 comments</span>
+                        <li>|</li>
+                        <li>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                        </li>
+                        <li>|</li>
+                        <li>
+                            <!-- Use Font Awesome http://fortawesome.github.io/Font-Awesome/ -->
+                            <span><i class="fa fa-facebook-square"></i></span>
+                            <span><i class="fa fa-twitter-square"></i></span>
+                            <span><i class="fa fa-google-plus-square"></i></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+	    }
+        
+    </div>
+</section>
+<!-- #endregion -->
