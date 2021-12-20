@@ -1,7 +1,17 @@
-﻿@*@model List<Blog>*@
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+@model List<Blog>
 @{
     ViewData["Title"] = "Home Page";
 }
+
+<div class="text-center">
+    <h1 class="display-4">@localizer["HelloWorld"]</h1>
+    <h1 class="display-4">@ViewData["HelloWorld"]</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+
+
 
 <!-- #region Blog Listesi -->
 <section id="blog" style="margin-top:20px!important;">
@@ -17,23 +27,23 @@
 
     <div class="container">
         <!-- Burada veritabanından gelen blogları listeliyoruz -->
-        @*@foreach (var item in @Model)
-	    {*@
+        @foreach (var item in @Model)
+	    {
         <div class="well" style="background-color:#F9C5D5">
             <div class="media">
                 <a class="pull-left" href="#">
-                    @*<img class="media-object" src="~/images/blog/@item.Image" width="150" height="150">*@
+                    <img class="media-object" src="~/images/blog/@item.Image" width="150" height="150">
                 </a>
                 <div class="media-body">
-                    @*<h4 class="media-heading"><a href="#">@item.Title</a></h4>*@
-                    @*<p class="text-right">By @item.Student.FirstName*@<p>
+                    <h4 class="media-heading"><a href="#">@item.Title</a></h4>
+                    <p class="text-right">By @item.ApplicationUser.FirstName<p>
                     <p>
                         <a href="#">
-                            @*@item.Content*@
+                            @item.Content
                         </a>
                     </p>
                     <ul class="list-inline list-unstyled">
-                        <li><span>@*<i class="glyphicon glyphicon-calendar"></i> @item.CreateDate*@ </span></li>
+                        <li><span><i class="glyphicon glyphicon-calendar"></i> @item.CreateDate </span></li>
                         <li>|</li>
                         <span><i class="glyphicon glyphicon-comment"></i> 2 comments</span>
                         <li>|</li>

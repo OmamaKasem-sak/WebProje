@@ -16,9 +16,8 @@ namespace WebProje.Models
         public string Content { get; set; }
         public DateTime? CreateDate { get; set; }
 
-        //buna sıra gelecek :D
-        //public int? StudentId { get; set; }
-        //[ForeignKey("StudentId")]
-        //public Student Student { get; set; }
+        public string ApplicationUserId { get; set; }
+        [ForeignKey("ApplicationUserId")]
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }
