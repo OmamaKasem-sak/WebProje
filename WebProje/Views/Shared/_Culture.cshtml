@@ -1,20 +1,28 @@
 ﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @inject Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.RequestLocalizationOptions> locOptions
- 
 
-@{ 
+
+@{
     var culture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
-    var cultureList = locOptions.Value.SupportedUICultures.Select(x => new SelectListItem { Value = x.Name, Text =localizer.GetString( x.Name)}).ToList();
+    var cultureList = locOptions.Value.SupportedUICultures.Select(x => new SelectListItem { Value = x.Name, Text = localizer.GetString(x.Name) }).ToList();
     var returnUrl = string.IsNullOrWhiteSpace(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}{Context.Request.QueryString}";
-} 
+}
 <div>
-    <form asp-action="CultureMangement" asp-controller="Home" method="post"
-          asp-route-returnUrl="@returnUrl">
+    <form asp-action="CultureMangement" asp-controller="Home" method="post" asp-route-returnUrl="@returnUrl">
 
         <select name="culture" asp-for="@culture.RequestCulture.UICulture.Name" asp-items="cultureList"
                 onchange="this.form.submit();"></select>
-        
+
     </form>
 
 </div>
- 
+@*  <div class="header__top__right__language">
+   
+<div>Diller</div>
+<span class="arrow_carrot-down"></span>
+<ul>
+    <li><a asp-area="" asp-controller="Home" asp-action="Index" asp-route-culture="tr-TR">Türkçe</a></li>
+    <li><a asp-area="" asp-controller="Home" asp-action="Index" asp-route-culture="en-US">English</a></li>
+
+</ul>
+                            </div> *@

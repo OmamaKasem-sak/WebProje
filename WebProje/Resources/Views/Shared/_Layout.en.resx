@@ -117,7 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="string1" xml:space="preserve">
-    <value />
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="My Homeland" xml:space="preserve">
+    <value>My Homeland</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="Student" xml:space="preserve">
+    <value>Student</value>
   </data>
 </root>

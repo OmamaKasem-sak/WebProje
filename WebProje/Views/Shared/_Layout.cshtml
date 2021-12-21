@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,8 +9,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Memleket Tanıtım</title>
-
+    <title>My Homeland</title>
+    
     <!-- Bootstrap -->
     <link href="~/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/font-awesome.min.css">
@@ -34,7 +34,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="site-logo">
-                        <a href="index.html" class="brand">Memleket Tanıtım</a>
+                        <a href="index.html" class="brand">@localizer["My Homeland"]</a>
                     </div>
                 </div>
 
@@ -49,15 +49,16 @@
                     <div class="collapse navbar-collapse" id="menu">
                         <ul class="nav navbar-nav navbar-right">
 
-                            <li><a asp-area="" asp-action="Index" asp-controller="Home">Home</a></li>
+                            <li><a asp-area="" asp-action="Index" asp-controller="Home">@localizer["Home"]</a></li>
                             <li><a href="#blog">Blog</a></li>
-                            <li> <a asp-area="Identity" asp-action="Login" asp-controller="Account"><i class="fa fa-user"></i> Login</a></li>
-                            <li> <a asp-area="Identity" asp-action="Register" asp-controller="Account"><i class="fa fa-bell"></i> Register</a></li>
-                            <li class="nav-link">
-                                <partial name="_Culture" />
+                            <li> <a asp-area="Identity" asp-action="Login" asp-controller="Account"><i class="fa fa-user"></i>@localizer["Login"]</a></li>
+                            <li> <a asp-area="Identity" asp-action="Register" asp-controller="Account"><i class="fa fa-bell"></i>@localizer["Register"] </a></li>
+                            <li >
+                                <a class="nav-link"> <partial name="_Culture"></a>
+                               
                             </li>
                         </ul>
-                      
+
                     </div>
                     <!-- /.Navbar-collapse -->
                 </div>
@@ -79,71 +80,71 @@
                 </div>
             </div>
         </div>
-        </section>
-        <!--/#Student-------------------------------------------->
-        <section id="student">
-            <div class="container">
-                <div class="center">
-                    <div class="col-md-6 col-md-offset-3">
-                        <h2>Student</h2>
-                        <hr>
-                        <p class="lead text-center">Burada Ogrenci listesi olacak...</p>
+    </section>
+    <!--/#Student-------------------------------------------->
+    <section id="student">
+        <div class="container">
+            <div class="center">
+                <div class="col-md-6 col-md-offset-3">
+                    <h2>@localizer["Student"]</h2>
+                    <hr>
+                    <p class="lead text-center">Burada Ogrenci listesi olacak...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+
+
+
+            </div><!--/.row-->
+        </div><!--/.container-->
+    </section><!--/#Student-------------------------------------->
+
+
+
+
+    <footer id="footer" class="midnight-blue">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="text-center">
+                        <a href="#home" class="scrollup"><i class="fa fa-angle-up fa-3x"></i></a>
+                    </div>
+                    &copy; 2015 <a target="_blank" href="http://bootstraptaste.com/" title="Free Twitter Bootstrap WordPress Themes and HTML templates">bootstraptaste</a>. All Rights Reserved.
+                    <!--
+                        All links in the footer should remain intact.
+                        Licenseing information is available at: http://bootstraptaste.com/license/
+                        You can buy this theme without footer links online at: http://bootstraptaste.com/buy/?theme=OnePage
+                    -->
+                </div>
+
+                <div class="top-bar">
+                    <div class="col-lg-12">
+                        <div class="social">
+                            <ul class="social-share">
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                                <li><a href="#"><i class="fa fa-skype"></i></a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="container">
-                <div class="row">
-
-
-
-                </div><!--/.row-->
-            </div><!--/.container-->
-        </section><!--/#Student-------------------------------------->
-
-
-
-
-        <footer id="footer" class="midnight-blue">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                        <div class="text-center">
-                            <a href="#home" class="scrollup"><i class="fa fa-angle-up fa-3x"></i></a>
-                        </div>
-                        &copy; 2015 <a target="_blank" href="http://bootstraptaste.com/" title="Free Twitter Bootstrap WordPress Themes and HTML templates">bootstraptaste</a>. All Rights Reserved.
-                        <!--
-                            All links in the footer should remain intact.
-                            Licenseing information is available at: http://bootstraptaste.com/license/
-                            You can buy this theme without footer links online at: http://bootstraptaste.com/buy/?theme=OnePage
-                        -->
-                    </div>
-
-                    <div class="top-bar">
-                        <div class="col-lg-12">
-                            <div class="social">
-                                <ul class="social-share">
-                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-skype"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer><!--/#footer-->
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="~/js/jquery.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="~/js/bootstrap.min.js"></script>
-        <script src="~/js/jquery.prettyPhoto.js"></script>
-        <script src="~/js/jquery.isotope.min.js"></script>
-        <script src="~/js/wow.min.js"></script>
-        <script src="~/js/jquery.easing.min.js"></script>
-        <script src="~/js/main.js"></script>
-        @await RenderSectionAsync("Scripts", required: false)
+        </div>
+    </footer><!--/#footer-->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="~/js/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.prettyPhoto.js"></script>
+    <script src="~/js/jquery.isotope.min.js"></script>
+    <script src="~/js/wow.min.js"></script>
+    <script src="~/js/jquery.easing.min.js"></script>
+    <script src="~/js/main.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
