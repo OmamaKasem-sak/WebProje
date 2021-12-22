@@ -123,6 +123,9 @@
   <data name="Login" xml:space="preserve">
     <value>Giriş</value>
   </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Çıkış Yap</value>
+  </data>
   <data name="My Homeland" xml:space="preserve">
     <value>Memleketim</value>
   </data>

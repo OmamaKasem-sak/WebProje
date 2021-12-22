@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>My Homeland</title>
-    
+
     <!-- Bootstrap -->
     <link href="~/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/font-awesome.min.css">
@@ -25,6 +25,11 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+        .altcizgi:hover {
+            text-decoration: none;
+        }
+    </style>
 </head>
 
 
@@ -50,12 +55,48 @@
                         <ul class="nav navbar-nav navbar-right">
 
                             <li><a asp-area="" asp-action="Index" asp-controller="Home">@localizer["Home"]</a></li>
-                            <li><a href="#blog">Blog</a></li>
-                            <li> <a asp-area="Identity" asp-action="Login" asp-controller="Account"><i class="fa fa-user"></i>@localizer["Login"]</a></li>
-                            <li> <a asp-area="Identity" asp-action="Register" asp-controller="Account"><i class="fa fa-bell"></i>@localizer["Register"] </a></li>
-                            <li >
+                            @*<li><a href="#blog">Blog</a></li>*@
+
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <li><a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a></li>
+                                <li style="margin-top:13px!important;text-decoration:none;">
+                                    <form id="myform" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                        <a class="altcizgi" style="cursor: pointer!important;text-decoration:none!important;" onclick="document.getElementById('myform').submit()">@localizer["Logout"]</a>
+                                    </form>
+                                </li>
+                                <li><a asp-area="" asp-action="Index" asp-controller="Blog">Blog</a></li>
+                            }
+                            else
+                            {
+                                <li> <a asp-area="Identity" asp-action="Login" asp-controller="Account"><i class="fa fa-user"></i>@localizer["Login"]</a></li>
+                                <li> <a asp-area="Identity" asp-action="Register" asp-controller="Account"><i class="fa fa-bell"></i>@localizer["Register"] </a></li>
+                            }
+
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Admin
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Blog" asp-action="Index">Blog</a>
+                                    </div>
+                                </li>
+
+                                @*<li>
+                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Admin
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="top-start" style="position: absolute; transform: translate3d(0px, -2px, 0px); top: 0px; left: 0px; will-change: transform;">
+                    <a class="dropdown-item" asp-area="Admin" asp-controller="Blog" asp-action="Index">Blog</a>
+                </div>
+            </li>*@
+                            }
+
+                            <li>
                                 <a class="nav-link"> <partial name="_Culture"></a>
-                               
                             </li>
                         </ul>
 
