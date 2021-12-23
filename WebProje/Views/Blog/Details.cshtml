@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2 style="margin-top:30px!important">Details</h2>
 
 <div>
     <h4>Blog</h4>
@@ -38,7 +38,7 @@
             @Html.DisplayNameFor(model => model.ApplicationUser)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.ApplicationUser.Id)
+            @Model.ApplicationUser.FirstName @Model.ApplicationUser.LastName
         </dd>
     </dl>
 </div>

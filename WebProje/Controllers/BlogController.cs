@@ -8,6 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebProje.Data;
 using WebProje.Models;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System.Reflection;
+using WebProje.Models.ViewModels;
 
 namespace WebProje.Controllers
 {
@@ -29,20 +34,21 @@ namespace WebProje.Controllers
         // GET: Blog
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Blog.Include(b => b.ApplicationUser).Where(u => u.ApplicationUser.Email == User.Identity.Name);
+            var applicationDbContext = _context.Blog.Include(b => b.ApplicationUser).Where(u => u.ApplicationUser.Id == _userManager.GetUserId(User));
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Blog/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
             }
 
             var blog = await _context.Blog
-                .Include(b => b.ApplicationUser)
+                .Include(b => b.ApplicationUser).Where(u => u.ApplicationUserId == _userManager.GetUserId(User))
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (blog == null)
             {
@@ -55,8 +61,7 @@ namespace WebProje.Controllers
         // GET: Blog/Create
         public IActionResult Create()
         {
-            //ViewData["ApplicationUserId"] = new SelectList(_context.Student, "Id", "Id");
-            //ViewData["ApplicationUserId"] = new SelectList(_context.Student, "Id").Where();
+            ViewData["ApplicationUserId"] = _userManager.GetUserId(User);
             return View();
         }
 
@@ -65,16 +70,46 @@ namespace WebProje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Image,Content,CreateDate,ApplicationUserId")] Blog blog)
+        public async Task<IActionResult> Create([Bind("Id,Title,Image,Content,CreateDate,ApplicationUserId")] BlogViewModel blogViewModel)
         {
             if (ModelState.IsValid)
             {
+                string uniqueFileName = UploadedFile(blogViewModel);
+
+                Blog blog = new Blog 
+                {
+                    Title = blogViewModel.Title,
+                    Image = uniqueFileName,
+                    Content = blogViewModel.Content,
+                    CreateDate = DateTime.Now,
+                    ApplicationUserId = blogViewModel.ApplicationUserId
+                };
+
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Student, "Id", "Id", blog.ApplicationUserId);
-            return View(blog);
+
+            ViewData["ApplicationUserId"] = _userManager.GetUserId(User);
+            
+            return View(blogViewModel);
+        }
+
+        private string UploadedFile(BlogViewModel blog)
+        {
+            string uniqueFileName = null;
+
+            if (blog.Image != null)
+            {
+                string uploadsFolder = Environment.CurrentDirectory + @"\wwwroot\images\blog";
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + blog.Image.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    blog.Image.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
         }
 
         // GET: Blog/Edit/5
@@ -85,12 +120,13 @@ namespace WebProje.Controllers
                 return NotFound();
             }
 
-            var blog = await _context.Blog.FindAsync(id);
+            var blog = await _context.Blog.Where(u => u.ApplicationUserId == _userManager.GetUserId(User))
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (blog == null)
             {
                 return NotFound();
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Student, "Id", "Id", blog.ApplicationUserId);
+            ViewData["ApplicationUserId"] = _userManager.GetUserId(User);
             return View(blog);
         }
 
@@ -126,7 +162,9 @@ namespace WebProje.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Student, "Id", "Id", blog.ApplicationUserId);
+
+            ViewData["ApplicationUserId"] = _userManager.GetUserId(User);
+
             return View(blog);
         }
 
@@ -139,7 +177,7 @@ namespace WebProje.Controllers
             }
 
             var blog = await _context.Blog
-                .Include(b => b.ApplicationUser)
+                .Include(b => b.ApplicationUser).Where(u => u.ApplicationUserId == _userManager.GetUserId(User))
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (blog == null)
             {
@@ -154,7 +192,8 @@ namespace WebProje.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var blog = await _context.Blog.FindAsync(id);
+            var blog = await _context.Blog.Where(u => u.ApplicationUserId == _userManager.GetUserId(User))
+                .FirstOrDefaultAsync(m => m.Id == id);
             _context.Blog.Remove(blog);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

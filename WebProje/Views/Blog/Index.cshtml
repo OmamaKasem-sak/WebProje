@@ -24,9 +24,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.CreateDate)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationUser)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -37,16 +34,13 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Image)
+                <img src="~/images/blog/@item.Image" alt="@item.Image" height="40"/>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Content)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreateDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
