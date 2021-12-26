@@ -53,7 +53,7 @@ namespace WebProje.Data
                 LastName = "Kasem",
                 EmailConfirmed = true,
                 PhoneNumber = "1112223333"
-            }, "Omama123.").GetAwaiter().GetResult();
+            }, "123").GetAwaiter().GetResult();
 
 
            _userManager.AddToRoleAsync(_db.Users.FirstOrDefaultAsync(u => u.Email == "b191210568@sakarya.edu.tr").GetAwaiter().GetResult(), "Admin").GetAwaiter().GetResult();

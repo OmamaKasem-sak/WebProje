@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Reflection;
 using WebProje.Models.ViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace WebProje.Controllers
 {
@@ -48,12 +49,14 @@ namespace WebProje.Controllers
             }
 
             var blog = await _context.Blog
-                .Include(b => b.ApplicationUser).Where(u => u.ApplicationUserId == _userManager.GetUserId(User))
+                .Include(b => b.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (blog == null)
             {
                 return NotFound();
             }
+
+            ViewData["ApplicationUserId"] = _userManager.GetUserId(User);
 
             return View(blog);
         }
@@ -70,13 +73,13 @@ namespace WebProje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Image,Content,CreateDate,ApplicationUserId")] BlogViewModel blogViewModel)
+        public async Task<IActionResult> Create(BlogViewModel blogViewModel)
         {
             if (ModelState.IsValid)
             {
                 string uniqueFileName = UploadedFile(blogViewModel);
 
-                Blog blog = new Blog 
+                Blog blog = new Blog
                 {
                     Title = blogViewModel.Title,
                     Image = uniqueFileName,
@@ -91,7 +94,7 @@ namespace WebProje.Controllers
             }
 
             ViewData["ApplicationUserId"] = _userManager.GetUserId(User);
-            
+
             return View(blogViewModel);
         }
 
@@ -126,8 +129,22 @@ namespace WebProje.Controllers
             {
                 return NotFound();
             }
+
             ViewData["ApplicationUserId"] = _userManager.GetUserId(User);
-            return View(blog);
+            ViewData["ImageName"] = blog.Image;
+
+
+            BlogViewModel blogViewModel = new BlogViewModel
+            {
+                ApplicationUserId = blog.ApplicationUserId,
+                Content = blog.Content,
+                Id = blog.Id,
+                CreateDate = blog.CreateDate,
+                Title = blog.Title,
+                ImageName = blog.Image
+            };
+
+            return View(blogViewModel);
         }
 
         // POST: Blog/Edit/5
@@ -135,9 +152,9 @@ namespace WebProje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Image,Content,CreateDate,ApplicationUserId")] Blog blog)
+        public async Task<IActionResult> Edit(int id, string imageName, BlogViewModel blogViewModel)
         {
-            if (id != blog.Id)
+            if (id != blogViewModel.Id)
             {
                 return NotFound();
             }
@@ -146,12 +163,49 @@ namespace WebProje.Controllers
             {
                 try
                 {
-                    _context.Update(blog);
+                    if (blogViewModel.Image != null)
+                    {
+                        string uniqueFileName = UploadedFile(blogViewModel);
+
+                        Blog blog = new Blog
+                        {
+                            Id = blogViewModel.Id,
+                            Title = blogViewModel.Title,
+                            Image = uniqueFileName,
+                            Content = blogViewModel.Content,
+                            CreateDate = blogViewModel.CreateDate,
+                            ApplicationUserId = blogViewModel.ApplicationUserId
+                        };
+
+                        _context.Update(blog);
+                    }
+
+                //    else
+                //    {
+                //        var blog = await _context.Blog.Where(u => u.ApplicationUserId == _userManager.GetUserId(User))
+                //.FirstOrDefaultAsync(m => m.Id == id);
+
+                //        if (blog == null)
+                //        {
+                //            return NotFound();
+                //        }
+
+                //        Blog blogModel = new Blog
+                //        {
+                //            Title = blogViewModel.Title,
+                //            Image = blogViewModel.ImageName,
+                //            Content = blogViewModel.Content,
+                //            CreateDate = blogViewModel.CreateDate,
+                //            ApplicationUserId = blogViewModel.ApplicationUserId
+                //        };
+                //        _context.Update(blogModel);
+                //    }
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BlogExists(blog.Id))
+                    if (!BlogExists(blogViewModel.Id))
                     {
                         return NotFound();
                     }
@@ -165,7 +219,7 @@ namespace WebProje.Controllers
 
             ViewData["ApplicationUserId"] = _userManager.GetUserId(User);
 
-            return View(blog);
+            return View(blogViewModel);
         }
 
         // GET: Blog/Delete/5

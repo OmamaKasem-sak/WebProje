@@ -1,48 +1,39 @@
 ﻿@model WebProje.Models.Blog
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Title;
+    Layout = "/Views/Shared/_NoSliderLayout.cshtml";
 }
 
-<h2 style="margin-top:30px!important">Details</h2>
-
-<div>
-    <h4>Blog</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CreateDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CreateDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ApplicationUser)
-        </dt>
-        <dd>
-            @Model.ApplicationUser.FirstName @Model.ApplicationUser.LastName
-        </dd>
-    </dl>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Post content-->
+            <article>
+                <!-- Post header-->
+                <header class="mb-4">
+                    <!-- Post title-->
+                    <h1 class="fw-bolder mb-1" style="margin-bottom:20px">@Model.Title</h1>
+                    <!-- Post meta content-->
+                    <div class="text-muted fst-italic mb-2">Posted on @Model.CreateDate by @Model.ApplicationUser.FirstName</div>
+                    <!-- Post categories-->
+                    <a class="badge bg-secondary text-decoration-none link-light" style="margin-bottom:20px" href="#!">Blog</a>
+                </header>
+                <!-- Preview image figure-->
+                <figure class="mb-4" style="margin-bottom:20px"><img class="img-fluid rounded" src="~/images/blog/@Model.Image" alt="@Model.Title" height="300"/></figure>
+                <!-- Post content-->
+                <section class="mb-5">
+                    @Html.Raw(Model.Content)
+                </section>
+            </article>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="text-center">
+    @if (Model.ApplicationUserId == @ViewBag.ApplicationUserId)
+    {
+        <a asp-area="" asp-controller="Blog" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    }
+    | <a asp-area="" asp-controller="Home" asp-action="Index">Back to List</a>
 </div>
